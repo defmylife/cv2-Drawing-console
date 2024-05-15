@@ -1,5 +1,6 @@
 import sys
 import cv2
+from PyQt5 import uic
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QImage, QPixmap, QColor
 from PyQt5.QtCore import Qt, QLocale
@@ -10,9 +11,10 @@ from rich.markdown import Markdown
 # Set the locale to English
 QLocale.setDefault(QLocale(QLocale.English, QLocale.UnitedStates))
 
-class CV2PutTextTuner(QWidget):
+class CV2PutTextTuner(QMainWindow):
     def __init__(self):
         super().__init__()
+        uic.loadUi('assets/app.ui', self)
 
         self.image = cv2.imread("assets/blank.png")  # Load a blank image
         self.text = "Hello, world!"
@@ -28,107 +30,109 @@ class CV2PutTextTuner(QWidget):
         self.scale_up_ratio = 2.0
         self.scale_down_ratio = 0.5
 
-        self.image_label = QLabel()
-        self.text_edit = QLineEdit()
-        self.font_face_combobox = QComboBox()
-        self.font_size_spinbox = QSpinBox()
-        self.font_color_button = QPushButton("Choose Color")
-        self.bg_toggle_button = QPushButton("Toggle Background")
-        self.bg_color_button = QPushButton("Choose Background Color")
-        self.bg_padding_spinbox = QSpinBox()
-        self.position_x_spinbox = QSpinBox()
-        self.position_y_spinbox = QSpinBox()
-        self.thickness_spinbox = QSpinBox()
+        self.image_label : QLabel
+        self.text_edit : QLineEdit
+        self.font_face_combobox : QComboBox
+        self.font_size_spinbox : QSpinBox
+        self.thickness_spinbox : QSpinBox
+        self.font_color_button : QPushButton
+        self.bg_toggle_button : QCheckBox
+        self.bg_color_button : QPushButton
+        self.bg_padding_spinbox : QSpinBox
+
+        # self.position_x_spinbox = QSpinBox()
+        # self.position_y_spinbox = QSpinBox()
 
         self.setup_ui()
         self.update_image()
 
     def setup_ui(self):
-        layout = QVBoxLayout()
+        # layout = QVBoxLayout()
+        # layout = self.putText.layout()
 
         self.image_label.setAlignment(Qt.AlignCenter)
-        layout.addWidget(self.image_label)
+        # layout.addWidget(self.image_label)
 
-        text_layout = QHBoxLayout()
-        text_layout.addWidget(QLabel("Text:"))
-        text_layout.addWidget(self.text_edit)
+        # text_layout = QHBoxLayout()
+        # text_layout.addWidget(QLabel("Text:"))
+        # text_layout.addWidget(self.text_edit)
         self.text_edit.setText(self.text)
         self.text_edit.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
         self.text_edit.textChanged.connect(self.set_text)
-        layout.addLayout(text_layout)
+        # layout.addLayout(text_layout)
 
-        font_face_layout = QHBoxLayout()
-        font_face_layout.addWidget(QLabel("Font Face:"))
-        self.font_face_combobox = QComboBox()
+        # font_face_layout = QHBoxLayout()
+        # font_face_layout.addWidget(QLabel("Font Face:"))
+        self.font_face_combobox : QComboBox
         self.font_face_combobox.addItems(["FONT_HERSHEY_SIMPLEX", "FONT_HERSHEY_PLAIN", "FONT_HERSHEY_DUPLEX", "FONT_HERSHEY_COMPLEX", "FONT_HERSHEY_TRIPLEX", "FONT_HERSHEY_COMPLEX_SMALL", "FONT_HERSHEY_SCRIPT_SIMPLEX", "FONT_HERSHEY_SCRIPT_COMPLEX"])
         self.font_face_combobox.currentIndexChanged.connect(self.set_font_face)
-        font_face_layout.addWidget(self.font_face_combobox)
-        layout.addLayout(font_face_layout)
+        # font_face_layout.addWidget(self.font_face_combobox)
+        # layout.addLayout(font_face_layout)
 
-        font_size_layout = QHBoxLayout()
-        font_size_layout.addWidget(QLabel("Font Size:"))
+        # font_size_layout = QHBoxLayout()
+        # font_size_layout.addWidget(QLabel("Font Size:"))
         self.font_size_spinbox.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
         self.font_size_spinbox.setValue(self.font_size)
         self.font_size_spinbox.valueChanged.connect(self.set_font_size)
-        font_size_layout.addWidget(self.font_size_spinbox)
-        layout.addLayout(font_size_layout)
+        # font_size_layout.addWidget(self.font_size_spinbox)
+        # layout.addLayout(font_size_layout)
 
-        font_color_layout = QHBoxLayout()
-        font_color_layout.addWidget(QLabel("Font Color:"))
+        # font_color_layout = QHBoxLayout()
+        # font_color_layout.addWidget(QLabel("Font Color:"))
         self.font_color_button.clicked.connect(self.set_font_color)
-        font_color_layout.addWidget(self.font_color_button)
-        layout.addLayout(font_color_layout)
+        # font_color_layout.addWidget(self.font_color_button)
+        # layout.addLayout(font_color_layout)
 
         # Add toggle button for text background
-        bg_toggle_layout = QHBoxLayout()
-        bg_toggle_layout.addWidget(QLabel("Toggle Font Background:"))
-        self.bg_toggle_button.setCheckable(True)
+        # bg_toggle_layout = QHBoxLayout()
+        # bg_toggle_layout.addWidget(QLabel("Toggle Font Background:"))
+        # self.bg_toggle_button.setCheckable(True)
         self.bg_toggle_button.setChecked(True)
         self.bg_toggle_button.clicked.connect(self.toggle_background)
-        bg_toggle_layout.addWidget(self.bg_toggle_button)
-        layout.addLayout(bg_toggle_layout)
+        # bg_toggle_layout.addWidget(self.bg_toggle_button)
+        # self.putText.layout().addLayout(bg_toggle_layout, 4, 1)
 
         # Add button to choose text background color
-        font_bg_color_layout = QHBoxLayout()
-        font_bg_color_layout.addWidget(QLabel("Font Background Color:"))
+        # font_bg_color_layout = QHBoxLayout()
+        # font_bg_color_layout.addWidget(QLabel("Font Background Color:"))
         self.bg_color_button.clicked.connect(self.set_background_color)
-        font_bg_color_layout.addWidget(self.bg_color_button)
-        layout.addLayout(font_bg_color_layout)
+        # font_bg_color_layout.addWidget(self.bg_color_button)
+        # self.putText.layout().addLayout(font_bg_color_layout, 5, 1)
 
         # Add spin box for text background padding
         self.bg_padding_spinbox.setMinimum(0)
         self.bg_padding_spinbox.setMaximum(100)  # Adjust maximum as needed
         self.bg_padding_spinbox.setValue(20)  # Default padding value
         self.bg_padding_spinbox.valueChanged.connect(self.update_image)
-        padding_layout = QHBoxLayout()
-        padding_layout.addWidget(QLabel("Font Background Padding:"))
-        padding_layout.addWidget(self.bg_padding_spinbox)
-        layout.addLayout(padding_layout)
+        # padding_layout = QHBoxLayout()
+        # padding_layout.addWidget(QLabel("Font Background Padding:"))
+        # padding_layout.addWidget(self.bg_padding_spinbox)
+        # self.putText.layout().addLayout(padding_layout, 6, 1)
 
-        thickness_layout = QHBoxLayout()
-        thickness_layout.addWidget(QLabel("Thickness:"))
+        # thickness_layout = QHBoxLayout()
+        # thickness_layout.addWidget(QLabel("Thickness:"))
         self.thickness_spinbox.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
         self.thickness_spinbox.setValue(self.thickness)
         self.thickness_spinbox.valueChanged.connect(self.set_thickness)
-        thickness_layout.addWidget(self.thickness_spinbox)
-        layout.addLayout(thickness_layout)
+        # thickness_layout.addWidget(self.thickness_spinbox)
+        # self.putText.layout().addLayout(thickness_layout, 7, 1)
 
-        position_layout = QHBoxLayout()
-        position_layout.addWidget(QLabel("Position X:"))
-        self.position_x_spinbox.setMaximum(self.w)
-        self.position_x_spinbox.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
-        self.position_x_spinbox.setValue(self.position_x)
-        self.position_x_spinbox.valueChanged.connect(self.set_position_x)
-        position_layout.addWidget(self.position_x_spinbox)
-        position_layout.addWidget(QLabel("Position Y:"))
-        self.position_y_spinbox.setMaximum(self.h)
-        self.position_y_spinbox.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
-        self.position_y_spinbox.setValue(self.position_y)
-        self.position_y_spinbox.valueChanged.connect(self.set_position_y)
-        position_layout.addWidget(self.position_y_spinbox)
-        layout.addLayout(position_layout)
+        # position_layout = QHBoxLayout()
+        # position_layout.addWidget(QLabel("Position X:"))
+        # self.position_x_spinbox.setMaximum(self.w)
+        # self.position_x_spinbox.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
+        # self.position_x_spinbox.setValue(self.position_x)
+        # self.position_x_spinbox.valueChanged.connect(self.set_position_x)
+        # position_layout.addWidget(self.position_x_spinbox)
+        # position_layout.addWidget(QLabel("Position Y:"))
+        # self.position_y_spinbox.setMaximum(self.h)
+        # self.position_y_spinbox.setFocusPolicy(Qt.ClickFocus)  # Set focus policy
+        # self.position_y_spinbox.setValue(self.position_y)
+        # self.position_y_spinbox.valueChanged.connect(self.set_position_y)
+        # position_layout.addWidget(self.position_y_spinbox)
+        # self.putText.layout().addLayout(position_layout, 8, 1)
 
-        self.setLayout(layout)
+        # self.setLayout(layout)
 
 
     def update_image(self):
